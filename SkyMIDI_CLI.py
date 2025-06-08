@@ -10,7 +10,7 @@ pdi.PAUSE   = 0            # 取消 0.1 s 延时
 # ---------- 查找 MIDI 输入端口 ----------
 ports = mido.get_input_names()
 if not ports:
-    print("❌ 没发现 MIDI 输入端口，请检查连接/驱动。")
+    print(":( 没发现 MIDI 输入端口，请检查连接。")
     sys.exit(1)
 
 print("可用 MIDI 端口：")
@@ -25,12 +25,12 @@ offsets = [-12,-10,-8,-7,-5,-3,-1, 0, 2, 4, 5, 7, 9,11,12]  # 相对中心音符
 CFG_FILE = 'midicenter.cfg'
 
 def calibrate_center_note():
-    print("\n🎹 请按下中央C...")
+    print("\n:) 请按下中央C...")
     with mido.open_input(MIDI_PORT) as port:
         for msg in port:
             if msg.type == 'note_on' and msg.velocity > 0:
                 center = msg.note
-                print(f"✅ 已记录中央C: {center}")
+                print(f"√ 已记录中央C: {center}")
                 with open(CFG_FILE, 'w', encoding='utf-8') as f:
                     json.dump({'center': center}, f)
                 return center
@@ -39,13 +39,13 @@ def calibrate_center_note():
 if os.path.exists(CFG_FILE):
     with open(CFG_FILE, 'r', encoding='utf-8') as f:
         center_note = json.load(f)['center']
-    print(f"\n🎵 读取已保存中心音符: {center_note}")
+    print(f"\n√ 读取已保存的中央C位置: {center_note}")
 else:
     center_note = calibrate_center_note()
 
 # ---------- 生成映射表 ----------
 note2key = {center_note + off: k for off, k in zip(offsets, keys)}
-print("\n🎼 当前映射:")
+print("\n:) 当前映射:")
 for n, k in note2key.items():
     print(f"  MIDI {n:>3} → 键盘 '{k}'")
 
@@ -76,4 +76,4 @@ try:
     while True:
         time.sleep(1)
 except KeyboardInterrupt:
-    print("\n👋 已退出")
+    print("\n:) 已退出")
