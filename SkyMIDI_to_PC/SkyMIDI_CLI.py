@@ -1,5 +1,6 @@
 """
-MIDI 15 键 → 游戏键盘按键（零延时 + 首次中央C校准版）
+MIDI 15 键 → 游戏键盘按键
+首次运行的时候会要求用户输入自己期望的中央C键。程序将按照该中央C对应光遇中的第二排中间的‘Do’
 """
 import sys, os, json, time, mido, pydirectinput as pdi
 
